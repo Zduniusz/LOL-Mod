@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net35</TargetFramework>
+        <AssemblyName>LOL_Mod</AssemblyName>
+        <Product>My first plugin</Product>
+        <Version>1.0.0</Version>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+        <RestoreAdditionalProjectSources>
+            https://api.nuget.org/v3/index.json;
+            https://nuget.bepinex.dev/v3/index.json;
+            https://nuget.samboy.dev/v3/index.json
+        </RestoreAdditionalProjectSources>
+        <RootNamespace>LOL_Mod</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
+        <PackageReference Include="BepInEx.Core" Version="5.*"/>
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*"/>
+        <PackageReference Include="UnityEngine.Modules" Version="5.6.0" IncludeAssets="compile"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>Refs\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp-firstpass">
+            <HintPath>Refs\Assembly-CSharp-firstpass.dll</HintPath>
+        </Reference>
+        <Reference Include="Lidgren.Network">
+            <HintPath>Refs\Lidgren.Network.dll</HintPath>
+        </Reference>
+        <Reference Include="TextMeshPro-1.0.55.56.0b9">
+            <HintPath>Refs\TextMeshPro-1.0.55.56.0b9.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine">
+            <HintPath>Refs\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+            <HintPath>Refs\UnityEngine.UI.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Remove="Additional Classes\**"/>
+        <Compile Remove="ChatCommands\**"/>
+        <Compile Remove="Patches\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Remove="Additional Classes\**"/>
+        <EmbeddedResource Remove="ChatCommands\**"/>
+        <EmbeddedResource Remove="Patches\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Additional Classes\**"/>
+        <None Remove="ChatCommands\**"/>
+        <None Remove="Patches\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="obj\Debug\net35\LOL-Mod.csproj.CopyComplete"/>
+        <Content Include="obj\Debug\net35\LOL-Mod.csproj.CoreCompileInputs.cache"/>
+        <Content Include="obj\Debug\net35\LOL_Mod.dll"/>
+        <Content Include="obj\Debug\net35\LOL_Mod.pdb"/>
+    </ItemGroup>
+</Project>
