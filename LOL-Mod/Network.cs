@@ -8,8 +8,9 @@ public class Network
 {
     public static void SendPacketToPlayer(Player player, P2PPackageHandler.MsgType msgType, byte[] packet)
     {
-        // Logger.LogInfo($"Sending {packet.Length} bytes to player {player.GetPlayerName()}({player.GetSteamId()})");
-        P2PPackageHandler.Instance.SendP2PPacketToUser(player.GetSteamId(), packet, msgType);
+        // Logger.LogInfo($"Sending {packet?.Length} bytes to player {player.GetPlayerName()}({player.GetSteamId()})");
+        P2PPackageHandler.Instance.SendP2PPacketToUser(player.GetSteamId(), packet, msgType,
+            channel: GetChannelForMsgType(P2PPackageHandler.Instance, msgType));
     }
 
     [HarmonyPatch(typeof(P2PPackageHandler), "CheckMessageType")]
@@ -23,8 +24,7 @@ public class Network
                     $"Player {new Player(steamIdRemote).GetPlayerName()} ({steamIdRemote}) tried to kick you via KickPlayer");
                 return false;
             case P2PPackageHandler.MsgType.ClientInit:
-                if (!new Player(steamIdRemote).IsHost() ||
-                    GameManager.Instance.mMultiplayerManager.HasBeenInitializedFromServer)
+                if (GameManager.Instance.mMultiplayerManager.HasBeenInitializedFromServer)
                 {
                     Logger.LogWarning(
                         $"Player {new Player(steamIdRemote).GetPlayerName()} ({steamIdRemote}) tried to kick you via ClientInit");
@@ -32,8 +32,18 @@ public class Network
                 }
 
                 break;
+            case P2PPackageHandler.MsgType.WorkshopMapsLoaded:
+                if (SteamFriends.HasFriend(steamIdRemote, EFriendFlags.k_EFriendFlagImmediate))
+                    break;
+                Logger.LogWarning(
+                    $"Player {new Player(steamIdRemote).GetPlayerName()} ({steamIdRemote}) tried to kick you via WorkshopMapsLoaded");
+                return false;
         }
 
         return true;
     }
+
+    [HarmonyPatch(typeof(P2PPackageHandler), "GetChannelForMsgType")]
+    [HarmonyReversePatch]
+    private static int GetChannelForMsgType(object instance, P2PPackageHandler.MsgType msgType) => 0;
 }

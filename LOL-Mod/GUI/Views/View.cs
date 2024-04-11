@@ -30,7 +30,7 @@ public class ViewAttribute : Attribute
 
     public long Id { get; }
     public string Name { get; }
-    public IView Handler { private get; set; }
+    public IView Handler { get; set; }
     public Type HandlerType { get; }
     private Rect WindowRect { get; set; }
 
@@ -52,7 +52,7 @@ public class ViewAttribute : Attribute
     }
 }
 
-class Option : Attribute
+internal class Option : Attribute
 {
     public readonly string Name;
 

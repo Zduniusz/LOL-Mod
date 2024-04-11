@@ -1,7 +1,9 @@
+using HarmonyLib;
 using UnityEngine;
 
 namespace LOL.GUI.Views;
 
+[HarmonyPatch]
 [ViewAttribute(typeof(KickView), "Kick Players", 400, 50)]
 public class KickView : IView
 {
@@ -43,7 +45,7 @@ public class KickView : IView
                         ClientInitKick(player);
                         break;
                     case 2:
-                        Logger.LogError("Workshop Corruption Kick not implemented yet.");
+                        WorkshopCorruptionKick(player);
                         break;
                 }
 
@@ -68,4 +70,8 @@ public class KickView : IView
 
     private static void ClientInitKick(Player player) =>
         Network.SendPacketToPlayer(player, P2PPackageHandler.MsgType.ClientInit, new byte[] { 0x00 });
+
+    private static void WorkshopCorruptionKick(Player player) =>
+        Network.SendPacketToPlayer(player, P2PPackageHandler.MsgType.WorkshopMapsLoaded,
+            new byte[2 + 8] { 0x01, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF });
 }

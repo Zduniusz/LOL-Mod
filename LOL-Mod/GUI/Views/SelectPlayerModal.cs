@@ -28,10 +28,7 @@ public class SelectPlayerModal : Modal
         {
             if (!Player.IsClientValid(client)) continue;
             var player = new Player(client.ClientID);
-            if (GUILayout.Button(player.GetPlayerDescription()))
-            {
-                _modal.Close(player.GetPlayerColor());
-            }
+            if (GUILayout.Button(player.GetPlayerDescription())) _modal.Close(player.GetPlayerColor());
         }
     }
 

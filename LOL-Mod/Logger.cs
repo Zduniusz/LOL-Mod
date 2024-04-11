@@ -1,5 +1,7 @@
+using System.Linq;
 using BepInEx.Logging;
 using HarmonyLib;
+using LOL.GUI;
 using LOL.GUI.Views;
 
 namespace LOL;
@@ -16,11 +18,13 @@ public class Logger
 
     public static void LogWarning(string message)
     {
+        Manager.Views.Values.First(attribute => attribute.HandlerType == typeof(TextLogView)).Handler.IsVisible = true;
         Log($"[WARNING] {message}");
     }
 
     public static void LogError(string message)
     {
+        Manager.Views.Values.First(attribute => attribute.HandlerType == typeof(TextLogView)).Handler.IsVisible = true;
         Log($"[ERROR] {message}");
     }
 

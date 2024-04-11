@@ -48,11 +48,18 @@ public class Manager
     [HarmonyPostfix]
     private static void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (!Input.GetKeyDown(KeyCode.Q)) return;
+        if (Input.GetKey(KeyCode.LeftShift))
+            foreach (var viewAttribute in Views.Values)
+                viewAttribute.Handler.IsVisible = false;
+        else
             RootView.Toggle();
     }
 
     [HarmonyPatch(typeof(Fighting), "Attack")]
     [HarmonyPrefix]
-    private static bool Attack() => !RootView.IsVisible;
+    private static bool Attack()
+    {
+        return !RootView.IsVisible;
+    }
 }
