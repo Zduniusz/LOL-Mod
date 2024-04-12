@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace LOL.GUI.Views;
+namespace LOL.GUI.Modals;
 
 public abstract class Modal
 {
@@ -9,7 +9,7 @@ public abstract class Modal
 
     private Rect _windowRect;
 
-    public Modal(Vector2 size, string name)
+    protected Modal(Vector2 size, string name)
     {
         _windowRect = new Rect(Constants.CENTER_VEC - size / 2, size);
         _name = name;
@@ -17,7 +17,7 @@ public abstract class Modal
 
     public event EventHandler<ModalClosedEventArgs> ModalClosed;
 
-    public abstract void RenderProxy(int id);
+    protected abstract void RenderProxy(int id);
 
     public void Render()
     {

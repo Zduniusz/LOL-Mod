@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace LOL.GUI.Views;
+namespace LOL.GUI.Modals;
 
 public class SelectPlayerModal : Modal
 {
@@ -12,11 +12,11 @@ public class SelectPlayerModal : Modal
         _modal = this;
     }
 
-    public override void RenderProxy(int id)
+    protected override void RenderProxy(int id)
     {
         var clients = Player.Clients;
 
-        if (GameManager.Instance.mMultiplayerManager.GetPlayersInLobby(true) <= 0)
+        if (GameManager.Instance.mMultiplayerManager.GetPlayersInLobby(false) <= 0 || clients == null)
         {
             GUILayout.Label("No players connected.");
             if (GUILayout.Button("Close"))

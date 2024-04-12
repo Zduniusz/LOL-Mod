@@ -42,19 +42,6 @@ public class FightingView : IView
     {
     }
 
-    [Option("Kill Player")]
-    public static void KillPlayer()
-    {
-        SelectPlayerModal modal = new();
-        modal.ModalClosed += (sender, args) =>
-        {
-            var player = new SelectPlayerModal.SelectPlayerEventArgs(args).SelectedPlayer;
-            if (player == null) return;
-            player.Kill();
-        };
-        modal.Spawn();
-    }
-
     [HarmonyPatch(typeof(Fighting), "Attack")]
     [HarmonyPostfix]
     private static void Attack(ref int ___bulletsLeft, ref float ___punchCD, ref float ___counter, ref Weapon ___weapon)

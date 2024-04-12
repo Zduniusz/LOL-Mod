@@ -15,7 +15,7 @@ public class Manager
     public static readonly Dictionary<long, ViewAttribute> Views = new();
 
     public static IView RootView;
-    public static Modal CurrentModal;
+    public static Modals.Modal CurrentModal;
     public static long CurrentWindowId => ++_currentWindowId;
 
     [HarmonyPatch(typeof(GameManager), "Awake")]
@@ -26,13 +26,12 @@ public class Manager
         foreach (var type in Assembly.GetCallingAssembly().GetTypes())
         {
             var customAttributes = type.GetCustomAttributes(typeof(ViewAttribute), false);
-            if (customAttributes.Length > 0)
-            {
-                var view = (ViewAttribute)customAttributes[0];
-                var handler = (IView)Activator.CreateInstance(type);
-                view.Handler = handler;
-                Views.Add(CurrentWindowId, view);
-            }
+            if (customAttributes.Length <= 0) continue;
+
+            var view = (ViewAttribute)customAttributes[0];
+            var handler = (IView)Activator.CreateInstance(type);
+            view.Handler = handler;
+            Views.Add(CurrentWindowId, view);
         }
     }
 

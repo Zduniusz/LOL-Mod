@@ -36,7 +36,15 @@ public class ViewAttribute : Attribute
 
     public void Render()
     {
-        if (Handler.IsVisible) WindowRect = GUILayout.Window((int)Id, WindowRect, RenderProxy, Name);
+        if (!Handler.IsVisible) return;
+
+        if (Manager.CurrentModal != null)
+            UnityEngine.GUI.enabled = false;
+
+        WindowRect = GUILayout.Window((int)Id, WindowRect, RenderProxy, Name);
+
+        if (Manager.CurrentModal != null)
+            UnityEngine.GUI.enabled = true;
     }
 
     private void RenderProxy(int id)
